@@ -17,7 +17,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set('view engine', 'ejs');  // Corrected syntax
 app.set('views', path.join(__dirname, 'views'));  // Optional, ensures views folder is found
 
-app.use("/owners", ownerRouter);  //handling routes separately
+//it says ki owner, user,products se related saari requests separately ownerRouter, userRouter, productRouter i.e routes pe bhej dijiye
+app.use("/owners", ownerRouter);  //handling routes separately .. 
 app.use('/users', userRouter);
 app.use('/products',productsRouter);
 

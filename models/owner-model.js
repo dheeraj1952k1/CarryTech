@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://127.0.0.1:12707/carryTech');
+// mongoose.connect('mongodb://127.0.0.1:12707/carryTech');
 
 const ownerSchema = mongoose.Schema({
     fullname:{
@@ -19,4 +19,4 @@ const ownerSchema = mongoose.Schema({
 })
 
 
-module.exports = mongodb.model('owner', ownerSchema);
+module.exports = mongoose.model('owner', ownerSchema);

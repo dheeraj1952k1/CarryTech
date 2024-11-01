@@ -1,6 +1,6 @@
 const mongoose  = require('mongoose');
 
-mongoose.connect('mongodb://127.0.0.1:12707/carryTech');
+// mongoose.connect('mongodb://127.0.0.1:12707/carryTech');
 
 const userSchema = mongoose.Schema({
     fullname:String,
@@ -10,7 +10,6 @@ const userSchema = mongoose.Schema({
         type:Array,
         default:[]
     },
-    isAdmin:Boolean,
     orders:{
         type:Array,
         default:[]
@@ -20,4 +19,4 @@ const userSchema = mongoose.Schema({
 })
 
 
-module.exports = mongodb.model('user',userSchema);
+module.exports = mongoose.model('user',userSchema);
