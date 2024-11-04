@@ -1,29 +1,30 @@
-const express = require('express');
-const userModels = require('../models/user-models');
-const router = express.Router();  // Create a router instance
+const express = require("express");
+const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send('user routes');
-});
+//Requireing utilites
+const {
+    registerUser,
+    loginUser,
+    logout,
+    user,
+    userupload,
+} = require("../controllers/authController");
+const isLogedIn = require("../middlewares/isLoggedIn");
+const upload = require("../config/multer-Config");
 
-router.post('/register', async function(req,res){
-    console.log('Register route hit');  // Debugging
-try{
-    let { email, password, fullname } = req.body;
+//register routs
+router.post("/register", registerUser);
 
-    let user = await userModels.create({
-        email,
-        password,
-        fullname,
-    })
-    console.log('User created:', user);  // Confirm success
-    res.status(201).send(user);
+//User routes
+router.get("/profile", isLogedIn, user);
 
-}catch(err){
-    console.error('Error:', err.message);  // Log any errors
-    res.status(500).send('Internal Server Error');
-}
+//User Upload images
+router.post("/userupload", upload.single("image"), isLogedIn, userupload);
 
-})
+//Login routs
+router.post("/login", loginUser);
 
-module.exports = router;  // Export the router
+//Logout routs
+router.get("/logout", isLogedIn, logout);
+
+module.exports = router;

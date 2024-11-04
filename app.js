@@ -1,27 +1,52 @@
-const express = require('express');
+//Before starting sever and app
+//You must be setup your env value remember that if it not show connected that mean some
+//Problem occure here.
+
+//Requireing express app
+const express = require("express");
 const app = express();
-const cookieParser = require('cookie-parser');
-const path = require('path');
 
-const db = require('./config/mongoose-connection');
-const ownerRouter = require('./routes/ownerRouter');
-const productsRouter = require('./routes/productsRouter');
-const userRouter = require('./routes/userRouter');
+//Requireing npm package
+const cookieParser = require("cookie-parser");
+const path = require("path");
+const expressSession = require("express-session");
+const flash = require("connect-flash");
 
+//It will help to get the all enviormental veriavle
+require("dotenv").config();
 
+//Requireing Database.
+const userModel = require("./models/user-models");
+const productModel = require("./models/product-models");
+const db = require("./config/mongoose-connection");
+
+//Requireing Routs
+const ownerRoute = require("./routes/ownerRouter");
+const userRoute = require("./routes/userRouter");
+const productRoute = require("./routes/productsRouter");
+const indexpage = require("./routes/index");
+
+//Setup Middilewares
+app.set("view engine", "ejs");
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(
+    expressSession({
+        secret: process.env.EXPRESS_SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+    })
+);
 
-app.set('view engine', 'ejs');  // Corrected syntax
-app.set('views', path.join(__dirname, 'views'));  // Optional, ensures views folder is found
+app.use(flash());
 
-//it says ki owner, user,products se related saari requests separately ownerRouter, userRouter, productRouter i.e routes pe bhej dijiye
-app.use("/owners", ownerRouter);  //handling routes separately .. 
-app.use('/users', userRouter);
-app.use('/products',productsRouter);
+//Setup routs
+app.use("/", indexpage);
+app.use("/owners", ownerRoute);
+app.use("/users", userRoute);
+app.use("/products", productRoute);
 
-app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
-});
+//App listening port
+app.listen(3000);

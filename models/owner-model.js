@@ -16,6 +16,10 @@ const ownerSchema = mongoose.Schema({
     },
     picture: String,
     gstin:String,
+    date:{
+        type:Date,
+        default:Date.now
+    }
 })
 
 
